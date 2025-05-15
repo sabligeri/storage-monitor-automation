@@ -12,12 +12,12 @@ public abstract class BaseTest {
     protected WebDriver driver;
     protected WebDriverWait wait;
 
-    public void setUp() {
+    public void setUp(String path) {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-search-engine-choice-screen");
         driver = new ChromeDriver(options);
         driver.manage().window().maximize();
-        driver.get(SUT);
+        driver.get(SUT + path);
         wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
 
