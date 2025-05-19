@@ -34,7 +34,7 @@ public class RegisterTest extends BaseTest {
         }
 
         registerPage.register(username, password);
-        boolean actualResult = registerPage.isRegistrationSuccessful();
+        boolean actualResult = registerPage.isOnLoginPage();
         assertEquals(expectedResult, actualResult, String.format("Username: '%s', Password: '%s'", username, password));
     }
 
@@ -49,10 +49,17 @@ public class RegisterTest extends BaseTest {
 
         registerPage.register(uniqueUsername, password);
 
-        assertFalse(registerPage.isRegistrationSuccessful());
+        assertFalse(registerPage.isOnLoginPage());
 
         String actual = registerPage.getPasswordValidationText();
         assertTrue(actual.contains(expectedMessagePart));
+    }
+
+    @Test
+    public void testLoginHereLinkNavigatesToLoginPage() {
+        registerPage.clickLoginHere();
+
+        assertTrue(registerPage.isOnLoginPage());
     }
 
 }

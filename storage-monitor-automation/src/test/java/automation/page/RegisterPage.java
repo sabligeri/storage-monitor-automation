@@ -24,6 +24,9 @@ public class RegisterPage extends BasePom {
     @FindBy(css = "p.MuiTypography-root.MuiTypography-body1")
     private WebElement passwordValidationMessage;
 
+    @FindBy(css = "a.MuiLink-root[href='/login']")
+    private WebElement loginHereLink;
+
     public RegisterPage(WebDriver webDriver) {
         super(webDriver, new WebDriverWait(webDriver, Duration.ofSeconds(5)));
         PageFactory.initElements(driver, this);
@@ -40,7 +43,7 @@ public class RegisterPage extends BasePom {
         registerButton.click();
     }
 
-    public boolean isRegistrationSuccessful() {
+    public boolean isOnLoginPage() {
         try {
             return wait.until(driver -> driver.getCurrentUrl().contains("/login"));
         } catch (Exception e) {
@@ -51,5 +54,9 @@ public class RegisterPage extends BasePom {
     public String getPasswordValidationText() {
         wait.until(ExpectedConditions.visibilityOf(passwordValidationMessage));
         return passwordValidationMessage.getText().trim();
+    }
+
+    public void clickLoginHere() {
+        wait.until(ExpectedConditions.elementToBeClickable(loginHereLink)).click();
     }
 }
