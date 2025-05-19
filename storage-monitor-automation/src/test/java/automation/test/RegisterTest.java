@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 
 import java.time.Instant;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RegisterTest extends BaseTest {
 
@@ -18,7 +18,6 @@ public class RegisterTest extends BaseTest {
     public void init() {
         setUp("register");
         registerPage = new RegisterPage(driver);
-        registerPage.open();
     }
 
     @AfterEach
@@ -27,7 +26,7 @@ public class RegisterTest extends BaseTest {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/credentials.csv", numLinesToSkip = 1)
+    @CsvFileSource(resources = "/registration.csv", numLinesToSkip = 1)
     public void testRegister(String username, String password, boolean expectedResult) {
 
         if(!username.isEmpty()) {
@@ -38,4 +37,22 @@ public class RegisterTest extends BaseTest {
         boolean actualResult = registerPage.isRegistrationSuccessful();
         assertEquals(expectedResult, actualResult, String.format("Username: '%s', Password: '%s'", username, password));
     }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "/password-validation.csv", numLinesToSkip = 1)
+    public void testPasswordValidationMessages(
+            String baseUsername,
+            String password,
+            String expectedMessagePart
+    ) {
+        String uniqueUsername = baseUsername + "_" + Instant.now().toEpochMilli();
+
+        registerPage.register(uniqueUsername, password);
+
+        assertFalse(registerPage.isRegistrationSuccessful());
+
+        String actual = registerPage.getPasswordValidationText();
+        assertTrue(actual.contains(expectedMessagePart));
+    }
+
 }

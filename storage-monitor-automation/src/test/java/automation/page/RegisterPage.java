@@ -21,13 +21,12 @@ public class RegisterPage extends BasePom {
     @FindBy(css = "button[type='submit']")
     private WebElement registerButton;
 
+    @FindBy(css = "p.MuiTypography-root.MuiTypography-body1")
+    private WebElement passwordValidationMessage;
+
     public RegisterPage(WebDriver webDriver) {
         super(webDriver, new WebDriverWait(webDriver, Duration.ofSeconds(5)));
         PageFactory.initElements(driver, this);
-    }
-
-    public void open() {
-        driver.get("http://localhost:3000/register");
     }
 
     public void register(String username, String password) {
@@ -47,5 +46,10 @@ public class RegisterPage extends BasePom {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public String getPasswordValidationText() {
+        wait.until(ExpectedConditions.visibilityOf(passwordValidationMessage));
+        return passwordValidationMessage.getText().trim();
     }
 }
