@@ -1,0 +1,6 @@
+username, password, expectedResult
+"", "", false
+"John", "Doe", false
+"Jane", "", false
+"", "password", false
+"Jason", "CorrectPassword1", true
