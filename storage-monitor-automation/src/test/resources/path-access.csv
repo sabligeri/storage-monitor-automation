@@ -1,0 +1,7 @@
+path,shouldRedirect
+home,true
+storagelist,true
+products,true
+production,true
+login,false
+register,false
