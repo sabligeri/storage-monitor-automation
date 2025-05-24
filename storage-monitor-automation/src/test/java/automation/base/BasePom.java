@@ -11,4 +11,12 @@ public abstract class BasePom {
         this.driver = driver;
         this.wait = wait;
     }
+
+    public boolean isOnPage(String pathToPage) {
+        try {
+            return wait.until(driver -> driver.getCurrentUrl().contains(pathToPage));
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
