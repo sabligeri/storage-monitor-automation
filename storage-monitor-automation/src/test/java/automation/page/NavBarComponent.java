@@ -1,6 +1,7 @@
 package automation.page;
 
 import automation.base.BasePom;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -41,6 +42,17 @@ public class NavBarComponent extends BasePom {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public String getCurrentTheme() {
+        return driver.findElement(By.tagName("body"))
+                .getAttribute("data-theme");
+    }
+
+    public String getCurrentThemeIcon() {
+        wait.until(ExpectedConditions.elementToBeClickable(themeToggleButton));
+        WebElement svg = themeToggleButton.findElement(By.tagName("svg"));
+        return svg.getAttribute("data-testid").trim();
     }
 
     public void clickHomeLink() {
