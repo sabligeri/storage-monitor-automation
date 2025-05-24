@@ -18,7 +18,6 @@ public class UnAuthenticatedPathTest extends BaseTest {
         } else {
             assertTrue(current.endsWith("/" + path));
         }
-
         tearDown();
     }
 }

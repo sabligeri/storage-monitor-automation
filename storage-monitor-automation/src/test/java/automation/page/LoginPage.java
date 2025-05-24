@@ -32,14 +32,6 @@ public class LoginPage extends BasePom {
         PageFactory.initElements(driver, this);
     }
 
-    public boolean isOnPage(String pathToPage) {
-        try {
-            return wait.until(driver -> driver.getCurrentUrl().contains(pathToPage));
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
     public void login(String username, String password) {
         wait.until(ExpectedConditions.visibilityOf(usernameInputField));
         usernameInputField.sendKeys(username);

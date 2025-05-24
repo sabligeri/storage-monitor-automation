@@ -39,7 +39,6 @@ public abstract class BaseTest {
         setUp("login");
         LoginPage loginPage = new LoginPage(driver);
         loginPage.login(username, PASSWORD);
-        tearDown();
     }
 
     public void tearDown() {
