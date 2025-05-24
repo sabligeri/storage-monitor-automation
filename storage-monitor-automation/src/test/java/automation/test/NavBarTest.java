@@ -44,4 +44,43 @@ public class NavBarTest extends BaseTest {
         navBar.clickHomeLink();
         assertTrue(navBar.isOnPage("home"));
     }
+
+    @Test
+    public void testSwitchToDarkMode() {
+        navBar.clickThemeToggleButton();
+        assertEquals("dark", navBar.getCurrentTheme());
+    }
+
+    @Test
+    public void testReturnToLightMode() {
+        navBar.clickThemeToggleButton();
+        navBar.clickThemeToggleButton();
+        assertEquals("light", navBar.getCurrentTheme());
+    }
+
+    @Test
+    public void testThemeToggleButtonIconChange() {
+        assertEquals("DarkModeIcon", navBar.getCurrentThemeIcon());
+        navBar.clickThemeToggleButton();
+        assertEquals("LightModeIcon", navBar.getCurrentThemeIcon());
+        navBar.clickThemeToggleButton();
+        assertEquals("DarkModeIcon", navBar.getCurrentThemeIcon());
+    }
+
+    @Test
+    public void testLogoutButtonRedirectToLoginPage() {
+        navBar.clickLogoutButton();
+        assertTrue(navBar.isOnPage("login"));
+    }
+
+    @Test
+    public void testProtectedPathsAfterLogout() {
+        navBar.clickLogoutButton();
+        String[] protectedPaths = {"home", "storagelist", "products", "production"};
+        for (String protectedPath : protectedPaths) {
+            driver.get(SUT + protectedPath);
+            assertTrue(navBar.isOnPage("login"));
+        }
+
+    }
 }
