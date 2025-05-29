@@ -30,11 +30,14 @@ public class StorageListPage extends BasePom {
     @FindBy(css = "div.css-qs3qa7")
     private List<WebElement> storageCards;
 
-    @FindBy(css = "button[data-testid='FolderOpenIcon']")
-    private List<WebElement> openButtons;
+    @FindBy(css = "svg[data-testid='FolderOpenIcon']")
+    private List<WebElement> openIcons;
 
-    @FindBy(css = "button[data-testid='DeleteIcon']")
-    private List<WebElement> deleteButtons;
+    @FindBy(css = "svg[data-testid='DeleteIcon']")
+    private List<WebElement> deleteIcons;
+
+    @FindBy(xpath = "//div[@role='dialog']//button[normalize-space()='Yes']")
+    private WebElement confirmYesButton;
 
     public StorageListPage(WebDriver webDriver) {
         super(webDriver, new WebDriverWait(webDriver, Duration.ofSeconds(5)));
@@ -78,19 +81,25 @@ public class StorageListPage extends BasePom {
 
     public void openStorage(String name) {
         int idx = getAllStorageNames().indexOf(name);
-        if (idx < 0) throw new IllegalArgumentException("No storage found with the name: " + name);
-        wait.until(ExpectedConditions.elementToBeClickable(openButtons.get(idx)))
-                .click();
+        if (idx < 0) throw new IllegalArgumentException("No storage: " + name);
+        WebElement btn = openIcons.get(idx)
+                .findElement(By.xpath("./ancestor::button"));
+        wait.until(ExpectedConditions.elementToBeClickable(btn)).click();
     }
 
     public void deleteStorage(String name) {
         int idx = getAllStorageNames().indexOf(name);
-        if (idx < 0) throw new IllegalArgumentException("No storage found with the name: " + name);
+        if (idx < 0) throw new IllegalArgumentException("No storage: " + name);
         WebElement card = storageCards.get(idx);
-        wait.until(ExpectedConditions.elementToBeClickable(deleteButtons.get(idx)))
+        WebElement btn = deleteIcons.get(idx)
+                .findElement(By.xpath("./ancestor::button"));
+        wait.until(ExpectedConditions.elementToBeClickable(btn))
+                .click();
+        wait.until(ExpectedConditions.elementToBeClickable(confirmYesButton))
                 .click();
         wait.until(ExpectedConditions.stalenessOf(card));
     }
+
 
 
 }
